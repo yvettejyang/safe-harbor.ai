@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ComplyGo — 跨境合规与风险监控平台</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root { --navy:#0B1E3F; --accent:#00B37E; --bg:#FAFAFA; }
+  html { scroll-behavior:smooth; }
+  body { font-family:'Noto Sans SC','Inter',system-ui,sans-serif; background:var(--bg); color:#111827; }
+  .gradient-hero {
+    background:
+      radial-gradient(1000px 500px at 80% -10%, rgba(0,179,126,0.10), transparent 60%),
+      radial-gradient(800px 400px at 0% 10%, rgba(11,30,63,0.06), transparent 60%);
+  }
+  .card { background:#fff; border:1px solid #ECEEF2; border-radius:16px;
+    transition:transform .25s, box-shadow .25s, border-color .25s; }
+  .card:hover { transform:translateY(-3px); box-shadow:0 12px 30px -12px rgba(11,30,63,0.15); border-color:#D7DBE3; }
+  .btn-primary { background:var(--navy); color:#fff; transition:opacity .2s; padding:8px 16px; border-radius:8px; font-size:14px; }
+  .btn-primary:hover { opacity:0.9; }
+  .btn-accent { background:var(--accent); color:#fff; padding:8px 16px; border-radius:8px; font-size:14px; }
+  .btn-ghost { border:1px solid #D7DBE3; color:var(--navy); padding:8px 16px; border-radius:8px; font-size:14px; background:#fff; }
+  .chip { display:inline-flex; align-items:center; gap:6px; padding:4px 12px; border-radius:999px;
+    background:rgba(0,179,126,0.08); color:#006C4C; font-size:12px; font-weight:500; }
+  .fade-in { opacity:0; transform:translateY(12px); transition:all .6s ease; }
+  .fade-in.visible { opacity:1; transform:translateY(0); }
+  .nav-link { color:#374151; } .nav-link:hover { color:var(--navy); }
+  .lang-active { background:#0B1E3F; color:#fff; }
+  .sidebar-item { display:flex; align-items:center; gap:10px; padding:10px 14px; border-radius:10px; color:#cbd5e1; font-size:14px; cursor:pointer; }
+  .sidebar-item:hover { background:rgba(255,255,255,0.06); color:#fff; }
+  .sidebar-item.active { background:rgba(0,179,126,0.15); color:#fff; border-left:3px solid var(--accent); padding-left:11px; }
+  .alert-red { background:#FEF2F2; color:#DC2626; border-left:3px solid #DC2626; }
+  .alert-yellow { background:#FFFBEB; color:#D97706; border-left:3px solid #D97706; }
+  .alert-blue { background:#EFF6FF; color:#2563EB; border-left:3px solid #2563EB; }
+  .view { display:none; }
+  .view.active { display:block; }
+  .screen { display:none; }
+  .screen.active { display:block; }
+  input,select,textarea { outline:none; }
+  input:focus,select:focus,textarea:focus { border-color:var(--accent); box-shadow:0 0 0 3px rgba(0,179,126,0.1); }
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     VIEW 1: LANDING PAGE (Marketing)
+============================================================ -->
+<div id="view-landing" class="view active">
+
+<!-- NAV -->
+<header class="sticky top-0 z-40 bg-white/80 backdrop-blur border-b border-gray-100">
+  <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+    <div class="flex items-center gap-2">
+      <div class="w-8 h-8 rounded-lg" style="background:linear-gradient(135deg,#0B1E3F,#00B37E)"></div>
+      <span class="font-bold text-lg" style="color:var(--navy)">ComplyGo</span>
+    </div>
+    <nav class="hidden md:flex items-center gap-8 text-sm">
+      <a href="#features" class="nav-link" data-i18n="nav_features">产品功能</a>
+      <a href="#how" class="nav-link" data-i18n="nav_how">运作流程</a>
+      <a href="#journey" class="nav-link" data-i18n="nav_journey">业务导航</a>
+      <a href="#pricing" class="nav-link" data-i18n="nav_pricing">价格方案</a>
+    </nav>
+    <div class="flex items-center gap-3">
+      <div class="flex text-xs rounded-full border border-gray-200 overflow-hidden">
+        <button id="lang-zh" class="px-3 py-1 lang-active">中文</button>
+        <button id="lang-en" class="px-3 py-1">EN</button>
+      </div>
+      <button onclick="openRegister()" class="hidden sm:inline text-sm nav-link" data-i18n="nav_login">登录</button>
+      <button onclick="openRegister()" class="btn-primary text-sm" data-i18n="nav_signup">免费注册</button>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="gradient-hero">
+  <div class="max-w-7xl mx-auto px-6 pt-20 pb-24 grid md:grid-cols-2 gap-12 items-center">
+    <div class="fade-in">
+      <span class="chip" data-i18n="hero_chip">● 面向跨境出海卖家的智能合规平台</span>
+      <h1 class="mt-5 text-4xl md:text-5xl lg:text-6xl font-bold leading-tight" style="color:var(--navy)" data-i18n="hero_title">
+        让每一次出海<br/>都<span style="color:var(--accent)">合规无忧</span>
+      </h1>
+      <p class="mt-6 text-lg text-gray-600 leading-relaxed" data-i18n="hero_desc">
+        从政策解读、HS编码查询,到关税预警与风险监控,ComplyGo 用 AI 帮你覆盖选品、上架、销售、物流全链路合规。
+      </p>
+      <div class="mt-8 flex gap-3 flex-wrap">
+        <button onclick="openRegister()" class="btn-primary px-6 py-3 text-sm font-medium" data-i18n="hero_cta1">免费开始使用</button>
+        <a href="#features" class="btn-ghost px-6 py-3 text-sm font-medium" data-i18n="hero_cta2">查看产品演示</a>
+      </div>
+      <div class="mt-10 flex items-center gap-6 text-xs text-gray-500 flex-wrap">
+        <span data-i18n="hero_trust">已对接平台:</span>
+        <span class="font-semibold">Amazon</span>
+        <span class="font-semibold">Shopee</span>
+        <span class="font-semibold">TikTok Shop</span>
+        <span class="font-semibold">eBay</span>
+      </div>
+    </div>
+
+    <div class="fade-in">
+      <div class="card p-5 shadow-xl">
+        <div class="flex items-center justify-between mb-4">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-red-400"></span>
+            <span class="w-2.5 h-2.5 rounded-full bg-yellow-400"></span>
+            <span class="w-2.5 h-2.5 rounded-full bg-green-400"></span>
+          </div>
+          <span class="text-xs text-gray-400">complygo.app/dashboard</span>
+        </div>
+        <div class="grid grid-cols-3 gap-3 mb-4">
+          <div class="rounded-lg p-3" style="background:#F2F8F5">
+            <div class="text-[10px] text-gray-500" data-i18n="kpi_safe">安全店铺</div>
+            <div class="text-xl font-bold" style="color:var(--accent)">12</div>
+          </div>
+          <div class="rounded-lg p-3 bg-amber-50">
+            <div class="text-[10px] text-gray-500" data-i18n="kpi_warn">待处理预警</div>
+            <div class="text-xl font-bold text-amber-600">5</div>
+          </div>
+          <div class="rounded-lg p-3 bg-red-50">
+            <div class="text-[10px] text-gray-500" data-i18n="kpi_risk">高风险</div>
+            <div class="text-xl font-bold text-red-500">1</div>
+          </div>
+        </div>
+        <div class="rounded-lg border border-gray-100 p-4">
+          <div class="text-xs font-semibold mb-3" style="color:var(--navy)" data-i18n="dash_chat">AI 合规助理</div>
+          <div class="space-y-2 text-xs">
+            <div class="bg-gray-50 rounded-lg px-3 py-2 inline-block" data-i18n="dash_q">「美国销售充电宝需要什么认证?」</div><br/>
+            <div class="bg-[#0B1E3F] text-white rounded-lg px-3 py-2 inline-block" data-i18n="dash_a">需 UN38.3 + FCC + UL2056,建议同步关注 CPSC 召回清单。</div>
+          </div>
+        </div>
+        <div class="mt-3 flex items-center gap-2 text-[11px] text-gray-500">
+          <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+          <span data-i18n="dash_status">实时监控中 · 上次扫描 2 分钟前</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PAIN POINTS -->
+<section class="py-20">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="text-center mb-14 fade-in">
+      <span class="chip" data-i18n="pain_chip">痛点描述</span>
+      <h2 class="mt-4 text-3xl md:text-4xl font-bold" style="color:var(--navy)" data-i18n="pain_title">出海合规的三大挑战</h2>
+    </div>
+    <div class="grid md:grid-cols-3 gap-6">
+      <div class="card p-8 fade-in">
+        <div class="w-10 h-10 rounded-lg flex items-center justify-center mb-4" style="background:#F2F8F5;color:var(--accent)">①</div>
+        <h3 class="font-semibold text-lg mb-2" data-i18n="pain1_t">政策碎片化</h3>
+        <p class="text-sm text-gray-600 leading-relaxed" data-i18n="pain1_d">各国法规分散、更新频繁,人工跟踪成本高,关键政策容易遗漏。</p>
+      </div>
+      <div class="card p-8 fade-in">
+        <div class="w-10 h-10 rounded-lg flex items-center justify-center mb-4" style="background:#F2F8F5;color:var(--accent)">②</div>
+        <h3 class="font-semibold text-lg mb-2" data-i18n="pain2_t">风险滞后</h3>
+        <p class="text-sm text-gray-600 leading-relaxed" data-i18n="pain2_d">店铺出问题才发现,处罚、下架、扣款往往已造成损失。</p>
+      </div>
+      <div class="card p-8 fade-in">
+        <div class="w-10 h-10 rounded-lg flex items-center justify-center mb-4" style="background:#F2F8F5;color:var(--accent)">③</div>
+        <h3 class="font-semibold text-lg mb-2" data-i18n="pain3_t">合规成本高</h3>
+        <p class="text-sm text-gray-600 leading-relaxed" data-i18n="pain3_d">外聘律师、认证机构费用昂贵,中小卖家难以承担专业团队。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how" class="py-20 bg-white border-y border-gray-100">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="text-center mb-14 fade-in">
+      <span class="chip" data-i18n="how_chip">设计逻辑</span>
+      <h2 class="mt-4 text-3xl md:text-4xl font-bold" style="color:var(--navy)" data-i18n="how_title">三步,搞定全链路合规</h2>
+    </div>
+    <div class="grid md:grid-cols-3 gap-6">
+      <div class="card p-8 fade-in">
+        <div class="text-xs font-semibold text-gray-400 mb-2">STEP 01</div>
+        <h3 class="font-semibold text-lg mb-2" data-i18n="how1_t">了解政策</h3>
+        <p class="text-sm text-gray-600 leading-relaxed" data-i18n="how1_d">实时聚合各国法规、关税、热门查询场景,一站式掌握政策动向。</p>
+      </div>
+      <div class="card p-8 fade-in">
+        <div class="text-xs font-semibold text-gray-400 mb-2">STEP 02</div>
+        <h3 class="font-semibold text-lg mb-2" data-i18n="how2_t">具体查询</h3>
+        <p class="text-sm text-gray-600 leading-relaxed" data-i18n="how2_d">AI 对话支持语音、图片输入,输出 HS 编码、税率、认证清单与合规报告。</p>
+      </div>
+      <div class="card p-8 fade-in">
+        <div class="text-xs font-semibold text-gray-400 mb-2">STEP 03</div>
+        <h3 class="font-semibold text-lg mb-2" data-i18n="how3_t">持续监控</h3>
+        <p class="text-sm text-gray-600 leading-relaxed" data-i18n="how3_d">对接平台 API 自动扫描,红/黄/蓝三级预警,风险变化第一时间触达。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features" class="py-20">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="text-center mb-14 fade-in">
+      <span class="chip" data-i18n="feat_chip">核心功能</span>
+      <h2 class="mt-4 text-3xl md:text-4xl font-bold" style="color:var(--navy)" data-i18n="feat_title">一个平台,覆盖所有合规需求</h2>
+    </div>
+    <div class="grid md:grid-cols-2 gap-8 mb-8">
+      <div class="card p-10 fade-in">
+        <span class="chip" data-i18n="feat1_chip">AI 智能对话</span>
+        <h3 class="mt-4 text-2xl font-bold" style="color:var(--navy)" data-i18n="feat1_t">和 AI 顾问一样对话</h3>
+        <p class="mt-3 text-gray-600 leading-relaxed" data-i18n="feat1_d">支持语音输入、图片识别。根据卖家角色、目标国家、产品类型,自动调用对应模型,输出专业合规报告。</p>
+        <ul class="mt-5 space-y-2 text-sm text-gray-700">
+          <li data-i18n="feat1_l1">✓ HS 编码、税率、认证清单一键生成</li>
+          <li data-i18n="feat1_l2">✓ 多窗口会话,按场景管理</li>
+          <li data-i18n="feat1_l3">✓ 输出可下载的合规报告</li>
+        </ul>
+      </div>
+      <div class="card p-10 fade-in">
+        <span class="chip" data-i18n="feat2_chip">风险监控</span>
+        <h3 class="mt-4 text-2xl font-bold" style="color:var(--navy)" data-i18n="feat2_t">让风险提前一步被发现</h3>
+        <p class="mt-3 text-gray-600 leading-relaxed" data-i18n="feat2_d">对接 Amazon、Shopee 等平台 API,自动扫描店铺合规状态。用户可自定义监控条件,系统生成专属监控面板。</p>
+        <div class="mt-5 flex gap-3 flex-wrap">
+          <span class="text-xs px-3 py-1 rounded-full bg-red-50 text-red-600" data-i18n="feat2_red">● 红色 紧急</span>
+          <span class="text-xs px-3 py-1 rounded-full bg-amber-50 text-amber-600" data-i18n="feat2_yellow">● 黄色 关注</span>
+          <span class="text-xs px-3 py-1 rounded-full bg-blue-50 text-blue-600" data-i18n="feat2_blue">● 蓝色 提示</span>
+        </div>
+      </div>
+    </div>
+    <div class="grid md:grid-cols-2 gap-8">
+      <div class="card p-10 fade-in">
+        <span class="chip" data-i18n="feat3_chip">知识库</span>
+        <h3 class="mt-4 text-2xl font-bold" style="color:var(--navy)" data-i18n="feat3_t">合规知识随取随用</h3>
+        <p class="mt-3 text-gray-600 leading-relaxed" data-i18n="feat3_d">汇总合规、法律、报告分类资料;提供税务、认证等优质服务商推荐,从查询到落地一站搞定。</p>
+      </div>
+      <div class="card p-10 fade-in">
+        <span class="chip" data-i18n="feat4_chip">系统管理</span>
+        <h3 class="mt-4 text-2xl font-bold" style="color:var(--navy)" data-i18n="feat4_t">灵活配置,适配企业</h3>
+        <p class="mt-3 text-gray-600 leading-relaxed" data-i18n="feat4_d">多账户协同、权限分级、资料集中管理。无论小白卖家还是企业团队都能即开即用。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BUSINESS JOURNEY -->
+<section id="journey" class="py-20 bg-white border-y border-gray-100">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="text-center mb-14 fade-in">
+      <span class="chip" data-i18n="journey_chip">业务导航</span>
+      <h2 class="mt-4 text-3xl md:text-4xl font-bold" style="color:var(--navy)" data-i18n="journey_title">陪伴卖家全周期</h2>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div class="card p-6 text-center fade-in"><div class="text-3xl mb-2">🎯</div><h4 class="font-semibold" data-i18n="j1_t">选品阶段</h4><p class="text-xs text-gray-500 mt-2" data-i18n="j1_d">市场情报 + 合规筛查</p></div>
+      <div class="card p-6 text-center fade-in"><div class="text-3xl mb-2">📦</div><h4 class="font-semibold" data-i18n="j2_t">上架阶段</h4><p class="text-xs text-gray-500 mt-2" data-i18n="j2_d">认证清单 + HS 编码</p></div>
+      <div class="card p-6 text-center fade-in"><div class="text-3xl mb-2">💰</div><h4 class="font-semibold" data-i18n="j3_t">销售阶段</h4><p class="text-xs text-gray-500 mt-2" data-i18n="j3_d">税务申报 + 风险预警</p></div>
+      <div class="card p-6 text-center fade-in"><div class="text-3xl mb-2">🚚</div><h4 class="font-semibold" data-i18n="j4_t">物流阶段</h4><p class="text-xs text-gray-500 mt-2" data-i18n="j4_d">关税变化 + 清关支持</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing" class="py-20">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="text-center mb-14 fade-in">
+      <span class="chip" data-i18n="price_chip">价格方案</span>
+      <h2 class="mt-4 text-3xl md:text-4xl font-bold" style="color:var(--navy)" data-i18n="price_title">按规模选择,弹性扩展</h2>
+    </div>
+    <div class="grid md:grid-cols-3 gap-6">
+      <div class="card p-8 fade-in">
+        <h3 class="font-semibold text-lg" data-i18n="p1_t">入门小白</h3>
+        <div class="text-4xl font-bold mt-3" style="color:var(--navy)">¥0</div>
+        <p class="text-xs text-gray-500 mt-1" data-i18n="p1_sub">免费试用 / 月</p>
+        <button onclick="openRegister()" class="btn-ghost mt-6 w-full" data-i18n="p_cta">立即开始</button>
+      </div>
+      <div class="card p-8 fade-in" style="border:2px solid var(--accent)">
+        <div class="flex items-center justify-between">
+          <h3 class="font-semibold text-lg" data-i18n="p2_t">独立卖家</h3>
+          <span class="chip" data-i18n="p_popular">推荐</span>
+        </div>
+        <div class="text-4xl font-bold mt-3" style="color:var(--navy)">¥299</div>
+        <p class="text-xs text-gray-500 mt-1" data-i18n="p2_sub">每月 / 单店铺</p>
+        <button onclick="openRegister()" class="btn-accent mt-6 w-full" data-i18n="p_cta2">开始订阅</button>
+      </div>
+      <div class="card p-8 fade-in">
+        <h3 class="font-semibold text-lg" data-i18n="p3_t">企业规模</h3>
+        <div class="text-4xl font-bold mt-3" style="color:var(--navy)" data-i18n="p3_price">定制</div>
+        <p class="text-xs text-gray-500 mt-1" data-i18n="p3_sub">多店铺 / 团队协同</p>
+        <button class="btn-ghost mt-6 w-full" data-i18n="p_cta3">联系销售</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="py-20">
+  <div class="max-w-5xl mx-auto px-6">
+    <div class="rounded-3xl p-12 text-center" style="background:linear-gradient(135deg,#0B1E3F,#06335A)">
+      <h2 class="text-3xl md:text-4xl font-bold text-white" data-i18n="cta_title">让合规不再是出海的拦路虎</h2>
+      <p class="mt-4 text-gray-300" data-i18n="cta_desc">注册即可获得首份店铺风险分析报告,免费、无需信用卡。</p>
+      <button onclick="openRegister()" class="btn-accent inline-block mt-8 px-8 py-3 font-medium text-sm" data-i18n="cta_btn">免费开始使用 →</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="border-t border-gray-100 py-12">
+  <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-4 gap-8 text-sm">
+    <div>
+      <div class="flex items-center gap-2 mb-4">
+        <div class="w-8 h-8 rounded-lg" style="background:linear-gradient(135deg,#0B1E3F,#00B37E)"></div>
+        <span class="font-bold" style="color:var(--navy)">ComplyGo</span>
+      </div>
+      <p class="text-xs text-gray-500" data-i18n="f_tag">让每一次出海都合规无忧。</p>
+    </div>
+    <div>
+      <h4 class="font-semibold mb-3" data-i18n="f_product">产品</h4>
+      <ul class="space-y-2 text-gray-500 text-xs">
+        <li data-i18n="f_p1">AI 合规助理</li><li data-i18n="f_p2">风险监控</li><li data-i18n="f_p3">知识库</li>
+      </ul>
+    </div>
+    <div>
+      <h4 class="font-semibold mb-3" data-i18n="f_company">公司</h4>
+      <ul class="space-y-2 text-gray-500 text-xs">
+        <li data-i18n="f_c1">关于我们</li><li data-i18n="f_c2">加入我们</li><li data-i18n="f_c3">联系我们</li>
+      </ul>
+    </div>
+    <div>
+      <h4 class="font-semibold mb-3" data-i18n="f_legal">合规与法律</h4>
+      <ul class="space-y-2 text-gray-500 text-xs">
+        <li data-i18n="f_l1">隐私政策</li><li data-i18n="f_l2">服务条款</li>
+      </ul>
+    </div>
+  </div>
+  <div class="max-w-7xl mx-auto px-6 mt-10 pt-6 border-t border-gray-100 text-xs text-gray-400 text-center">
+    © 2026 ComplyGo. All rights reserved.
+  </div>
+</footer>
+
+</div>
+<!-- END view-landing -->
+
+<!-- ============================================================
+     REGISTER MODAL
+============================================================ -->
+<div id="register-modal" class="fixed inset-0 z-50 bg-black/50 items-center justify-center p-4 hidden">
+  <div class="bg-white rounded-2xl max-w-2xl w-full p-8 max-h-[90vh] overflow-y-auto">
+    <div class="flex justify-between items-start">
+      <div>
+        <div class="flex items-center gap-2 mb-2">
+          <div class="w-8 h-8 rounded-lg" style="background:linear-gradient(135deg,#0B1E3F,#00B37E)"></div>
+          <span class="font-bold text-lg" style="color:var(--navy)">ComplyGo</span>
+        </div>
+        <h2 class="text-2xl font-bold mt-3" style="color:var(--navy)">欢迎注册</h2>
+        <p class="text-sm text-gray-500 mt-1">完成 3 步,获得首份风险分析报告</p>
+      </div>
+      <button onclick="closeRegister()" class="text-gray-400 hover:text-gray-700 text-2xl leading-none">×</button>
+    </div>
+
+    <div class="flex items-center gap-2 mt-6 mb-6">
+      <div id="step-1-dot" class="flex-1 h-1.5 rounded-full" style="background:#00B37E"></div>
+      <div id="step-2-dot" class="flex-1 h-1.5 rounded-full bg-gray-200"></div>
+      <div id="step-3-dot" class="flex-1 h-1.5 rounded-full bg-gray-200"></div>
+    </div>
+
+    <div id="reg-step-1">
+      <label class="text-sm font-medium">手机号 / 邮箱 *</label>
+      <input type="text" class="w-full border border-gray-200 rounded-lg p-3 mt-2" placeholder="+86 138 0000 0000 或 you@email.com">
+      <div class="text-center text-xs text-gray-400 my-4">或使用社交账号</div>
+      <div class="grid grid-cols-3 gap-2">
+        <button class="btn-ghost">微信</button>
+        <button class="btn-ghost">Google</button>
+        <button class="btn-ghost">Apple</button>
+      </div>
+      <button onclick="regNext(2)" class="btn-primary w-full mt-6 py-3">下一步 →</button>
+    </div>
+
+    <div id="reg-step-2" class="hidden">
+      <label class="text-sm font-medium">您当前的角色 * (必选)</label>
+      <div class="grid grid-cols-3 gap-3 mt-3">
+        <button onclick="selectRole(this)" class="role-btn border border-gray-200 rounded-lg p-4 text-left">
+          <div class="font-semibold">入门小白</div><div class="text-xs text-gray-500 mt-1">刚开始了解出海</div>
+        </button>
+        <button onclick="selectRole(this)" class="role-btn border border-gray-200 rounded-lg p-4 text-left">
+          <div class="font-semibold">独立卖家</div><div class="text-xs text-gray-500 mt-1">个人 / 小团队</div>
+        </button>
+        <button onclick="selectRole(this)" class="role-btn border border-gray-200 rounded-lg p-4 text-left">
+          <div class="font-semibold">企业规模</div><div class="text-xs text-gray-500 mt-1">公司化运作</div>
+        </button>
+      </div>
+      <div class="flex gap-2 mt-6">
+        <button onclick="regNext(1)" class="btn-ghost flex-1 py-3">← 上一步</button>
+        <button onclick="regNext(3)" class="btn-primary flex-1 py-3">下一步 →</button>
+      </div>
+    </div>
+
+    <div id="reg-step-3" class="hidden">
+      <label class="text-sm font-medium">出海模式 (可选)</label>
+      <select class="w-full border border-gray-200 rounded-lg p-3 mt-2">
+        <option>跨境电商 (FBA / FBM)</option><option>独立站 (Shopify / 自建)</option>
+        <option>批发 B2B</option><option>品牌出海</option>
+      </select>
+      <label class="text-sm font-medium block mt-4">产品方向 (可选)</label>
+      <select class="w-full border border-gray-200 rounded-lg p-3 mt-2">
+        <option>3C 电子</option><option>家居家具</option><option>服装配饰</option>
+        <option>美妆个护</option><option>母婴玩具</option><option>其他</option>
+      </select>
+      <label class="text-sm font-medium block mt-4">目标市场 (可选)</label>
+      <div class="flex flex-wrap gap-2 mt-2">
+        <span class="chip bg-gray-100 text-gray-700 cursor-pointer">🇺🇸 美国</span>
+        <span class="chip bg-gray-100 text-gray-700 cursor-pointer">🇪🇺 欧盟</span>
+        <span class="chip bg-gray-100 text-gray-700 cursor-pointer">🇬🇧 英国</span>
+        <span class="chip bg-gray-100 text-gray-700 cursor-pointer">🇯🇵 日本</span>
+        <span class="chip bg-gray-100 text-gray-700 cursor-pointer">🇸🇬 东南亚</span>
+      </div>
+      <div class="flex gap-2 mt-6">
+        <button onclick="regNext(2)" class="btn-ghost flex-1 py-3">← 上一步</button>
+        <button onclick="completeRegister()" class="btn-accent flex-1 py-3">完成注册 →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     VIEW 2: APP
+============================================================ -->
+<div id="view-app" class="view">
+<div class="flex" style="background:#F5F7FA; min-height:100vh">
+  <aside class="w-60 p-5 relative" style="background:var(--navy)">
+    <div class="flex items-center gap-2 mb-8">
+      <div class="w-8 h-8 rounded-lg" style="background:linear-gradient(135deg,#fff,#00B37E)"></div>
+      <span class="font-bold text-white">ComplyGo</span>
+    </div>
+    <nav class="space-y-1">
+      <div class="sidebar-item active" onclick="showScreen('dashboard',this)">🏠 首页</div>
+      <div class="sidebar-item" onclick="showScreen('chat',this)">💬 智能对话</div>
+      <div class="sidebar-item" onclick="showScreen('risk',this)">🛡️ 风险监控</div>
+      <div class="sidebar-item" onclick="showScreen('knowledge',this)">📚 知识库</div>
+      <div class="sidebar-item" onclick="showScreen('settings',this)">⚙️ 系统管理</div>
+    </nav>
+    <div class="absolute bottom-5 left-5 right-5 text-xs text-gray-400 border-t border-gray-700 pt-4">
+      <div class="font-medium text-white">张先生</div>
+      <div>独立卖家 · 3C 电子</div>
+      <button onclick="backToLanding()" class="text-xs mt-3 underline">← 返回首页</button>
+    </div>
+  </aside>
+
+  <main class="flex-1 p-8 overflow-x-hidden">
+
+    <!-- DASHBOARD -->
+    <section id="screen-dashboard" class="screen active">
+      <div class="flex justify-between items-center mb-6">
+        <div>
+          <h1 class="text-2xl font-bold" style="color:var(--navy)">早上好,欢迎回来 👋</h1>
+          <p class="text-sm text-gray-500 mt-1">您今天有 5 条待处理合规预警 · 1 个高风险项</p>
+        </div>
+        <button class="btn-accent">+ 新建合规查询</button>
+      </div>
+      <div class="grid grid-cols-4 gap-4 mb-6">
+        <div class="card p-5"><div class="text-xs text-gray-500">安全店铺</div><div class="text-3xl font-bold mt-1" style="color:var(--accent)">12</div><div class="text-xs text-gray-400 mt-1">较昨日 +1</div></div>
+        <div class="card p-5"><div class="text-xs text-gray-500">待处理预警</div><div class="text-3xl font-bold mt-1 text-amber-600">5</div><div class="text-xs text-gray-400 mt-1">较昨日 +2</div></div>
+        <div class="card p-5"><div class="text-xs text-gray-500">高风险项</div><div class="text-3xl font-bold mt-1 text-red-500">1</div><div class="text-xs text-gray-400 mt-1">需立即处理</div></div>
+        <div class="card p-5"><div class="text-xs text-gray-500">本月节省成本</div><div class="text-3xl font-bold mt-1" style="color:var(--navy)">¥8,200</div><div class="text-xs text-gray-400 mt-1">vs 外包顾问</div></div>
+      </div>
+      <div class="grid grid-cols-3 gap-6">
+        <div class="col-span-2 space-y-6">
+          <div class="card p-6">
+            <div class="flex justify-between items-center mb-4">
+              <h3 class="font-semibold" style="color:var(--navy)">🌍 各国政策动向</h3>
+              <a href="#" class="text-xs" style="color:var(--accent)">查看全部 →</a>
+            </div>
+            <div class="space-y-3">
+              <div class="flex gap-3 p-3 hover:bg-gray-50 rounded-lg cursor-pointer">
+                <span class="text-2xl">🇺🇸</span>
+                <div class="flex-1"><div class="text-sm font-medium">美国 CPSC 发布新版充电宝召回标准</div><div class="text-xs text-gray-500 mt-1">影响 3C 类目 · 2 小时前</div></div>
+                <span class="chip alert-red">高优先级</span>
+              </div>
+              <div class="flex gap-3 p-3 hover:bg-gray-50 rounded-lg cursor-pointer">
+                <span class="text-2xl">🇪🇺</span>
+                <div class="flex-1"><div class="text-sm font-medium">欧盟 GPSR 通用产品安全法规 2026 修订</div><div class="text-xs text-gray-500 mt-1">影响所有品类 · 6 小时前</div></div>
+                <span class="chip alert-yellow">需关注</span>
+              </div>
+              <div class="flex gap-3 p-3 hover:bg-gray-50 rounded-lg cursor-pointer">
+                <span class="text-2xl">🇯🇵</span>
+                <div class="flex-1"><div class="text-sm font-medium">日本消费税从 10% 调整为 12%(2026 Q3)</div><div class="text-xs text-gray-500 mt-1">影响所有日本店铺 · 昨天</div></div>
+                <span class="chip alert-blue">已规划</span>
+              </div>
+            </div>
+          </div>
+          <div class="card p-6">
+            <h3 class="font-semibold mb-4" style="color:var(--navy)">🚀 业务导航 · 全链路合规</h3>
+            <div class="grid grid-cols-4 gap-3">
+              <button class="border border-gray-100 rounded-xl p-4 hover:border-[#00B37E] text-left"><div class="text-2xl mb-2">🎯</div><div class="font-medium text-sm">选品阶段</div><div class="text-xs text-gray-500 mt-1">市场情报 + 合规筛查</div></button>
+              <button class="border border-gray-100 rounded-xl p-4 hover:border-[#00B37E] text-left"><div class="text-2xl mb-2">📦</div><div class="font-medium text-sm">上架阶段</div><div class="text-xs text-gray-500 mt-1">认证清单 + HS 编码</div></button>
+              <button class="border border-gray-100 rounded-xl p-4 hover:border-[#00B37E] text-left"><div class="text-2xl mb-2">💰</div><div class="font-medium text-sm">销售阶段</div><div class="text-xs text-gray-500 mt-1">税务申报 + 风险预警</div></button>
+              <button class="border border-gray-100 rounded-xl p-4 hover:border-[#00B37E] text-left"><div class="text-2xl mb-2">🚚</div><div class="font-medium text-sm">物流阶段</div><div class="text-xs text-gray-500 mt-1">关税变化 + 清关</div></button>
+            </div>
+          </div>
+        </div>
+        <div class="space-y-6">
+          <div class="card p-6">
+            <h3 class="font-semibold mb-4" style="color:var(--navy)">⚠️ 待处理预警</h3>
+            <div class="space-y-2">
+              <div class="alert-red p-3 rounded text-sm"><div class="font-medium">充电宝认证缺失</div><div class="text-xs mt-1 opacity-80">SKU: PB-2024-A · Amazon US</div></div>
+              <div class="alert-yellow p-3 rounded text-sm"><div class="font-medium">VAT 申报截止 5 天</div><div class="text-xs mt-1 opacity-80">英国站 · 2026-06-13</div></div>
+              <div class="alert-yellow p-3 rounded text-sm"><div class="font-medium">关税政策变更</div><div class="text-xs mt-1 opacity-80">HS 8504 · 美国 +5%</div></div>
+              <div class="alert-blue p-3 rounded text-sm"><div class="font-medium">新功能可用</div><div class="text-xs mt-1 opacity-80">日本 PSE 智能预检</div></div>
+            </div>
+          </div>
+          <div class="card p-6">
+            <h3 class="font-semibold mb-4" style="color:var(--navy)">📋 我的待办</h3>
+            <ul class="space-y-3 text-sm">
+              <li class="flex gap-2"><input type="checkbox"> 完善店铺资料(Amazon DE)</li>
+              <li class="flex gap-2"><input type="checkbox"> 上传 CE 认证文件</li>
+              <li class="flex gap-2"><input type="checkbox"> 审核新品合规报告</li>
+              <li class="flex gap-2"><input type="checkbox" checked> <span class="line-through text-gray-400">注册账号</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CHAT -->
+    <section id="screen-chat" class="screen">
+      <h1 class="text-2xl font-bold mb-6" style="color:var(--navy)">💬 智能对话</h1>
+      <div class="grid grid-cols-4 gap-6" style="height:calc(100vh - 180px)">
+        <div class="card p-4 overflow-y-auto">
+          <button class="btn-accent w-full mb-3">+ 新建对话</button>
+          <div class="space-y-1 text-sm">
+            <div class="p-3 rounded-lg bg-[#F2F8F5] border-l-2 border-[#00B37E] cursor-pointer">
+              <div class="font-medium">充电宝 - 美国合规</div><div class="text-xs text-gray-500 mt-1">2 分钟前</div>
+            </div>
+            <div class="p-3 rounded-lg hover:bg-gray-50 cursor-pointer">
+              <div class="font-medium">欧盟 GPSR 解读</div><div class="text-xs text-gray-500 mt-1">昨天</div>
+            </div>
+            <div class="p-3 rounded-lg hover:bg-gray-50 cursor-pointer">
+              <div class="font-medium">日本 PSE 认证流程</div><div class="text-xs text-gray-500 mt-1">3 天前</div>
+            </div>
+            <div class="p-3 rounded-lg hover:bg-gray-50 cursor-pointer">
+              <div class="font-medium">首次注册分析(初始)</div><div class="text-xs text-gray-500 mt-1">注册时</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-span-3 card flex flex-col">
+          <div class="border-b border-gray-100 p-4 flex justify-between items-center">
+            <div>
+              <div class="font-semibold">充电宝 - 美国合规</div>
+              <div class="text-xs text-gray-500">角色:独立卖家 · 产品:3C · 目标:美国</div>
+            </div>
+            <div class="flex gap-2">
+              <button class="btn-ghost text-xs">📄 导出报告</button>
+              <button class="btn-ghost text-xs">⚙️ 设置</button>
+            </div>
+          </div>
+          <div class="flex-1 p-6 overflow-y-auto space-y-4">
+            <div class="flex justify-end">
+              <div class="bg-[#0B1E3F] text-white rounded-2xl rounded-tr-sm p-4 max-w-lg text-sm">美国销售充电宝(10000mAh)需要哪些认证?</div>
+            </div>
+            <div class="flex">
+              <div class="bg-gray-100 rounded-2xl rounded-tl-sm p-4 max-w-2xl text-sm space-y-2">
+                <div class="font-semibold">⚖️ 美国充电宝合规清单</div>
+                <ul class="space-y-1 list-disc ml-5">
+                  <li><b>UN38.3</b> — 锂电池运输安全测试(必须)</li>
+                  <li><b>FCC Part 15</b> — 电磁兼容性认证</li>
+                  <li><b>UL 2056</b> — 移动电源安全标准(亚马逊强制)</li>
+                  <li><b>CPSC</b> — 召回清单监控</li>
+                </ul>
+                <div class="text-xs text-gray-500 mt-3">HS Code: 8504.40.95 · 关税:0%(MFN)</div>
+                <div class="flex gap-2 mt-3">
+                  <button class="btn-accent text-xs">📥 生成 PDF 报告</button>
+                  <button class="btn-ghost text-xs">🔍 详细解读</button>
+                </div>
+              </div>
+            </div>
+            <div class="flex justify-end">
+              <div class="bg-[#0B1E3F] text-white rounded-2xl rounded-tr-sm p-4 max-w-lg text-sm">如果要进入欧盟,还需要补充什么?</div>
+            </div>
+            <div class="flex">
+              <div class="bg-gray-100 rounded-2xl rounded-tl-sm p-4 max-w-2xl text-sm">
+                <div class="flex items-center gap-2 text-gray-400">
+                  <span class="w-2 h-2 bg-[#00B37E] rounded-full animate-pulse"></span>
+                  AI 正在生成回复...
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="border-t border-gray-100 p-4">
+            <div class="flex gap-2 items-end">
+              <button class="btn-ghost p-2 text-lg">🎙️</button>
+              <button class="btn-ghost p-2 text-lg">📷</button>
+              <textarea rows="1" class="flex-1 border border-gray-200 rounded-lg p-3 text-sm" placeholder="输入产品 + 目标国家,AI 自动输出 HS 编码 / 税率 / 认证清单..."></textarea>
+              <button class="btn-accent">发送</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RISK -->
+    <section id="screen-risk" class="screen">
+      <div class="flex justify-between items-center mb-6">
+        <h1 class="text-2xl font-bold" style="color:var(--navy)">🛡️ 风险监控</h1>
+        <div class="flex gap-2">
+          <button class="btn-ghost">🔄 立即扫描</button>
+          <button class="btn-accent">+ 新建监控</button>
+        </div>
+      </div>
+      <div class="grid grid-cols-3 gap-4 mb-6">
+        <div class="card p-5 border-l-4 border-red-500"><div class="flex justify-between"><div><div class="text-xs text-gray-500">红色 · 紧急</div><div class="text-3xl font-bold text-red-500 mt-1">1</div></div><span class="text-3xl">🚨</span></div></div>
+        <div class="card p-5 border-l-4 border-amber-500"><div class="flex justify-between"><div><div class="text-xs text-gray-500">黄色 · 关注</div><div class="text-3xl font-bold text-amber-500 mt-1">4</div></div><span class="text-3xl">⚠️</span></div></div>
+        <div class="card p-5 border-l-4 border-blue-500"><div class="flex justify-between"><div><div class="text-xs text-gray-500">蓝色 · 提示</div><div class="text-3xl font-bold text-blue-500 mt-1">7</div></div><span class="text-3xl">ℹ️</span></div></div>
+      </div>
+      <div class="card overflow-hidden">
+        <div class="border-b border-gray-100 p-4 flex justify-between items-center">
+          <h3 class="font-semibold">监控列表</h3>
+          <div class="flex gap-2 text-xs">
+            <select class="border border-gray-200 rounded-lg px-3 py-1.5"><option>全部店铺</option><option>Amazon US</option><option>Shopee SG</option></select>
+            <select class="border border-gray-200 rounded-lg px-3 py-1.5"><option>全部级别</option><option>红色</option><option>黄色</option><option>蓝色</option></select>
+          </div>
+        </div>
+        <table class="w-full text-sm">
+          <thead class="bg-gray-50 text-xs text-gray-500">
+            <tr><th class="text-left p-3">级别</th><th class="text-left p-3">问题</th><th class="text-left p-3">店铺 / SKU</th><th class="text-left p-3">国家</th><th class="text-left p-3">发现时间</th><th class="text-left p-3">操作</th></tr>
+          </thead>
+          <tbody>
+            <tr class="border-t border-gray-100"><td class="p-3"><span class="chip alert-red">● 红色</span></td><td class="p-3 font-medium">充电宝缺 UL2056 认证</td><td class="p-3 text-gray-600">PB-2024-A</td><td class="p-3">🇺🇸 US</td><td class="p-3 text-gray-500">2 小时前</td><td class="p-3"><button class="btn-accent text-xs">立即处理</button></td></tr>
+            <tr class="border-t border-gray-100"><td class="p-3"><span class="chip alert-yellow">● 黄色</span></td><td class="p-3 font-medium">英国 VAT 申报截止 5 天</td><td class="p-3 text-gray-600">全部 UK SKU</td><td class="p-3">🇬🇧 UK</td><td class="p-3 text-gray-500">今早</td><td class="p-3"><button class="btn-ghost text-xs">查看</button></td></tr>
+            <tr class="border-t border-gray-100"><td class="p-3"><span class="chip alert-yellow">● 黄色</span></td><td class="p-3 font-medium">HS 8504 关税 +5%</td><td class="p-3 text-gray-600">PB-2024-A,PB-2024-B</td><td class="p-3">🇺🇸 US</td><td class="p-3 text-gray-500">昨天</td><td class="p-3"><button class="btn-ghost text-xs">查看</button></td></tr>
+            <tr class="border-t border-gray-100"><td class="p-3"><span class="chip alert-blue">● 蓝色</span></td><td class="p-3 font-medium">日本 PSE 新规预警</td><td class="p-3 text-gray-600">JP-3C 类</td><td class="p-3">🇯🇵 JP</td><td class="p-3 text-gray-500">3 天前</td><td class="p-3"><button class="btn-ghost text-xs">查看</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card p-6 mt-6">
+        <h3 class="font-semibold mb-4" style="color:var(--navy)">🔌 已连接平台</h3>
+        <div class="grid grid-cols-4 gap-3">
+          <div class="border border-gray-100 rounded-lg p-3 flex items-center justify-between"><span class="text-sm font-medium">Amazon US</span><span class="chip" style="background:#F2F8F5;color:#006C4C">● 已连接</span></div>
+          <div class="border border-gray-100 rounded-lg p-3 flex items-center justify-between"><span class="text-sm font-medium">Amazon UK</span><span class="chip" style="background:#F2F8F5;color:#006C4C">● 已连接</span></div>
+          <div class="border border-gray-100 rounded-lg p-3 flex items-center justify-between"><span class="text-sm font-medium">Shopee SG</span><span class="chip" style="background:#F2F8F5;color:#006C4C">● 已连接</span></div>
+          <div class="border-2 border-dashed border-gray-200 rounded-lg p-3 flex items-center justify-center text-gray-400 cursor-pointer text-sm">+ 添加店铺</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- KNOWLEDGE -->
+    <section id="screen-knowledge" class="screen">
+      <h1 class="text-2xl font-bold mb-6" style="color:var(--navy)">📚 知识库</h1>
+      <div class="card p-4 mb-6"><input class="w-full p-3 text-sm border-0" placeholder="🔍 搜索法规、税务、认证、案例..."></div>
+      <div class="flex gap-2 mb-6 flex-wrap">
+        <span class="chip" style="background:#0B1E3F;color:#fff">全部</span>
+        <span class="chip bg-gray-100 text-gray-700">合规法规</span>
+        <span class="chip bg-gray-100 text-gray-700">关税税务</span>
+        <span class="chip bg-gray-100 text-gray-700">认证流程</span>
+        <span class="chip bg-gray-100 text-gray-700">案例分析</span>
+        <span class="chip bg-gray-100 text-gray-700">行业报告</span>
+      </div>
+      <div class="grid grid-cols-3 gap-4 mb-8">
+        <div class="card p-6 cursor-pointer"><span class="chip alert-blue">合规法规</span><h4 class="font-semibold mt-3">美国 FTC 广告合规完整指南</h4><p class="text-xs text-gray-500 mt-2">涵盖商品描述、星级评价、影响者合作等高频违规点。</p><div class="text-xs text-gray-400 mt-3">12 分钟阅读 · 2026-05</div></div>
+        <div class="card p-6 cursor-pointer"><span class="chip alert-yellow">关税税务</span><h4 class="font-semibold mt-3">欧盟 IOSS 一站式申报详解</h4><p class="text-xs text-gray-500 mt-2">€150 以下小额订单 VAT 申报机制全解析。</p><div class="text-xs text-gray-400 mt-3">8 分钟阅读 · 2026-04</div></div>
+        <div class="card p-6 cursor-pointer"><span class="chip alert-red">认证流程</span><h4 class="font-semibold mt-3">日本 PSE 圆形菱形差异</h4><p class="text-xs text-gray-500 mt-2">哪些品类需要菱形 PSE,违规处罚案例。</p><div class="text-xs text-gray-400 mt-3">6 分钟阅读 · 2026-03</div></div>
+      </div>
+      <h3 class="font-semibold text-lg mb-3" style="color:var(--navy)">⭐ 推荐服务商</h3>
+      <div class="grid grid-cols-3 gap-4">
+        <div class="card p-5"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full" style="background:linear-gradient(135deg,#60a5fa,#a78bfa)"></div><div><div class="font-semibold">XX 国际税务</div><div class="text-xs text-gray-500">VAT / EORI / IOSS 一站式</div></div></div><div class="flex justify-between items-center mt-4"><div class="text-xs text-amber-500">★★★★★ 4.9 (256)</div><button class="btn-ghost text-xs">联系</button></div></div>
+        <div class="card p-5"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full" style="background:linear-gradient(135deg,#4ade80,#14b8a6)"></div><div><div class="font-semibold">XX 认证检测</div><div class="text-xs text-gray-500">CE / FCC / PSE / UL 加急</div></div></div><div class="flex justify-between items-center mt-4"><div class="text-xs text-amber-500">★★★★☆ 4.7 (189)</div><button class="btn-ghost text-xs">联系</button></div></div>
+        <div class="card p-5"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full" style="background:linear-gradient(135deg,#fb923c,#ef4444)"></div><div><div class="font-semibold">XX 跨境法律</div><div class="text-xs text-gray-500">商标 / 专利 / 合规咨询</div></div></div><div class="flex justify-between items-center mt-4"><div class="text-xs text-amber-500">★★★★★ 4.8 (143)</div><button class="btn-ghost text-xs">联系</button></div></div>
+      </div>
+    </section>
+
+    <!-- SETTINGS -->
+    <section id="screen-settings" class="screen">
+      <h1 class="text-2xl font-bold mb-6" style="color:var(--navy)">⚙️ 系统管理</h1>
+      <div class="grid grid-cols-4 gap-6">
+        <div class="card p-4 h-fit">
+          <ul class="space-y-1 text-sm">
+            <li class="p-2 rounded bg-[#F2F8F5] text-[#006C4C] font-medium cursor-pointer">资料设置</li>
+            <li class="p-2 rounded hover:bg-gray-50 cursor-pointer">店铺管理</li>
+            <li class="p-2 rounded hover:bg-gray-50 cursor-pointer">通知偏好</li>
+            <li class="p-2 rounded hover:bg-gray-50 cursor-pointer">团队成员</li>
+            <li class="p-2 rounded hover:bg-gray-50 cursor-pointer">订阅与计费</li>
+            <li class="p-2 rounded hover:bg-gray-50 cursor-pointer">API 密钥</li>
+            <li class="p-2 rounded hover:bg-gray-50 cursor-pointer">安全设置</li>
+          </ul>
+        </div>
+        <div class="col-span-3 card p-6 space-y-5">
+          <h3 class="font-semibold" style="color:var(--navy)">资料设置</h3>
+          <div><label class="text-xs text-gray-500">公司 / 个人名称</label><input class="w-full mt-1 border border-gray-200 rounded-lg p-2.5 text-sm" value="张先生 跨境工作室"></div>
+          <div class="grid grid-cols-2 gap-4">
+            <div><label class="text-xs text-gray-500">当前角色</label><select class="w-full mt-1 border border-gray-200 rounded-lg p-2.5 text-sm"><option>独立卖家</option><option>入门小白</option><option>企业规模</option></select></div>
+            <div><label class="text-xs text-gray-500">产品方向</label><select class="w-full mt-1 border border-gray-200 rounded-lg p-2.5 text-sm"><option>3C 电子</option><option>家居家具</option><option>服装配饰</option></select></div>
+          </div>
+          <div><label class="text-xs text-gray-500">目标市场</label><div class="flex gap-2 mt-2 flex-wrap">
+            <span class="chip" style="background:#0B1E3F;color:#fff">🇺🇸 美国 ×</span>
+            <span class="chip" style="background:#0B1E3F;color:#fff">🇬🇧 英国 ×</span>
+            <span class="chip" style="background:#0B1E3F;color:#fff">🇯🇵 日本 ×</span>
+            <span class="chip bg-gray-100 text-gray-700 cursor-pointer">+ 添加</span>
+          </div></div>
+          <div class="pt-4 border-t border-gray-100 flex gap-2">
+            <button class="btn-accent">保存设置</button>
+            <button class="btn-ghost">取消</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+</div>
+<!-- END view-app -->
+
+<script>
+// i18n (landing page only)
+const i18n = {
+  zh: {
+    nav_features:"产品功能", nav_how:"运作流程", nav_journey:"业务导航", nav_pricing:"价格方案",
+    nav_login:"登录", nav_signup:"免费注册",
+    hero_chip:"● 面向跨境出海卖家的智能合规平台",
+    hero_title:'让每一次出海<br/>都<span style="color:var(--accent)">合规无忧</span>',
+    hero_desc:"从政策解读、HS编码查询,到关税预警与风险监控,ComplyGo 用 AI 帮你覆盖选品、上架、销售、物流全链路合规。",
+    hero_cta1:"免费开始使用", hero_cta2:"查看产品演示", hero_trust:"已对接平台:",
+    kpi_safe:"安全店铺", kpi_warn:"待处理预警", kpi_risk:"高风险",
+    dash_chat:"AI 合规助理", dash_q:"「美国销售充电宝需要什么认证?」",
+    dash_a:"需 UN38.3 + FCC + UL2056,建议同步关注 CPSC 召回清单。",
+    dash_status:"实时监控中 · 上次扫描 2 分钟前",
+    pain_chip:"痛点描述", pain_title:"出海合规的三大挑战",
+    pain1_t:"政策碎片化", pain1_d:"各国法规分散、更新频繁,人工跟踪成本高,关键政策容易遗漏。",
+    pain2_t:"风险滞后", pain2_d:"店铺出问题才发现,处罚、下架、扣款往往已造成损失。",
+    pain3_t:"合规成本高", pain3_d:"外聘律师、认证机构费用昂贵,中小卖家难以承担专业团队。",
+    how_chip:"设计逻辑", how_title:"三步,搞定全链路合规",
+    how1_t:"了解政策", how1_d:"实时聚合各国法规、关税、热门查询场景,一站式掌握政策动向。",
+    how2_t:"具体查询", how2_d:"AI 对话支持语音、图片输入,输出 HS 编码、税率、认证清单与合规报告。",
+    how3_t:"持续监控", how3_d:"对接平台 API 自动扫描,红/黄/蓝三级预警,风险变化第一时间触达。",
+    feat_chip:"核心功能", feat_title:"一个平台,覆盖所有合规需求",
+    feat1_chip:"AI 智能对话", feat1_t:"和 AI 顾问一样对话",
+    feat1_d:"支持语音输入、图片识别。根据卖家角色、目标国家、产品类型,自动调用对应模型,输出专业合规报告。",
+    feat1_l1:"✓ HS 编码、税率、认证清单一键生成", feat1_l2:"✓ 多窗口会话,按场景管理", feat1_l3:"✓ 输出可下载的合规报告",
+    feat2_chip:"风险监控", feat2_t:"让风险提前一步被发现",
+    feat2_d:"对接 Amazon、Shopee 等平台 API,自动扫描店铺合规状态。用户可自定义监控条件,系统生成专属监控面板。",
+    feat2_red:"● 红色 紧急", feat2_yellow:"● 黄色 关注", feat2_blue:"● 蓝色 提示",
+    feat3_chip:"知识库", feat3_t:"合规知识随取随用",
+    feat3_d:"汇总合规、法律、报告分类资料;提供税务、认证等优质服务商推荐,从查询到落地一站搞定。",
+    feat4_chip:"系统管理", feat4_t:"灵活配置,适配企业",
+    feat4_d:"多账户协同、权限分级、资料集中管理。无论小白卖家还是企业团队都能即开即用。",
+    journey_chip:"业务导航", journey_title:"陪伴卖家全周期",
+    j1_t:"选品阶段", j1_d:"市场情报 + 合规筛查", j2_t:"上架阶段", j2_d:"认证清单 + HS 编码",
+    j3_t:"销售阶段", j3_d:"税务申报 + 风险预警", j4_t:"物流阶段", j4_d:"关税变化 + 清关支持",
+    price_chip:"价格方案", price_title:"按规模选择,弹性扩展",
+    p1_t:"入门小白", p1_sub:"免费试用 / 月", p_cta:"立即开始",
+    p2_t:"独立卖家", p2_sub:"每月 / 单店铺", p_cta2:"开始订阅", p_popular:"推荐",
+    p3_t:"企业规模", p3_price:"定制", p3_sub:"多店铺 / 团队协同", p_cta3:"联系销售",
+    cta_title:"让合规不再是出海的拦路虎", cta_desc:"注册即可获得首份店铺风险分析报告,免费、无需信用卡。",
+    cta_btn:"免费开始使用 →", f_tag:"让每一次出海都合规无忧。",
+    f_product:"产品", f_p1:"AI 合规助理", f_p2:"风险监控", f_p3:"知识库",
+    f_company:"公司", f_c1:"关于我们", f_c2:"加入我们", f_c3:"联系我们",
+    f_legal:"合规与法律", f_l1:"隐私政策", f_l2:"服务条款"
+  },
+  en: {
+    nav_features:"Features", nav_how:"How it works", nav_journey:"Journey", nav_pricing:"Pricing",
+    nav_login:"Log in", nav_signup:"Get started",
+    hero_chip:"● Smart compliance platform for cross-border sellers",
+    hero_title:'Go global,<br/>stay <span style="color:var(--accent)">compliant</span>',
+    hero_desc:"From policy lookup and HS codes to tariff alerts and risk monitoring — ComplyGo uses AI to cover sourcing, listing, sales, and logistics end-to-end.",
+    hero_cta1:"Start for free", hero_cta2:"See product demo", hero_trust:"Integrations:",
+    kpi_safe:"Safe stores", kpi_warn:"Pending alerts", kpi_risk:"High risk",
+    dash_chat:"AI Compliance Assistant", dash_q:"\"What certifications are needed to sell power banks in the US?\"",
+    dash_a:"UN38.3 + FCC + UL2056. Also monitor the CPSC recall list.",
+    dash_status:"Live monitoring · Last scan 2 min ago",
+    pain_chip:"Pain Points", pain_title:"Three challenges of going global",
+    pain1_t:"Fragmented policy", pain1_d:"Regulations vary by country and update constantly — easy to miss critical changes.",
+    pain2_t:"Delayed risk discovery", pain2_d:"By the time you notice, fines, takedowns, and chargebacks have already hit.",
+    pain3_t:"High compliance cost", pain3_d:"Lawyers and certification agencies are expensive — out of reach for small sellers.",
+    how_chip:"Design Logic", how_title:"Three steps, full-chain compliance",
+    how1_t:"Understand policy", how1_d:"Real-time aggregation of regulations, tariffs, and popular queries across markets.",
+    how2_t:"Query specifics", how2_d:"AI chat with voice & image input — outputs HS codes, tax rates, certifications, reports.",
+    how3_t:"Monitor continuously", how3_d:"Auto-scan via platform APIs. Red/Yellow/Blue alerts the moment risk changes.",
+    feat_chip:"Core Features", feat_title:"One platform, every compliance need",
+    feat1_chip:"AI Chat", feat1_t:"Talk to an AI advisor",
+    feat1_d:"Voice & image input. Based on seller role, target country and product type, the system calls the right model and outputs professional compliance reports.",
+    feat1_l1:"✓ One-click HS codes, tax rates, cert checklists",
+    feat1_l2:"✓ Multi-thread sessions by scenario", feat1_l3:"✓ Downloadable compliance reports",
+    feat2_chip:"Risk Monitor", feat2_t:"Catch risk before it costs you",
+    feat2_d:"Connect to Amazon, Shopee and more. Auto-scan store compliance with custom monitoring rules.",
+    feat2_red:"● Red Urgent", feat2_yellow:"● Yellow Watch", feat2_blue:"● Blue Notice",
+    feat3_chip:"Knowledge Base", feat3_t:"Compliance know-how on demand",
+    feat3_d:"Curated regulations, legal docs, and reports — plus vetted tax and certification providers.",
+    feat4_chip:"Admin", feat4_t:"Flexible setup for teams",
+    feat4_d:"Multi-account collaboration, role-based access, centralized data.",
+    journey_chip:"Business Journey", journey_title:"With you across the full cycle",
+    j1_t:"Sourcing", j1_d:"Market intel + compliance check",
+    j2_t:"Listing", j2_d:"Cert checklist + HS code",
+    j3_t:"Selling", j3_d:"Tax filing + risk alerts",
+    j4_t:"Logistics", j4_d:"Tariff changes + customs support",
+    price_chip:"Pricing", price_title:"Pick your scale, grow flexibly",
+    p1_t:"Starter", p1_sub:"Free trial / month", p_cta:"Start now",
+    p2_t:"Solo Seller", p2_sub:"per month / single store", p_cta2:"Subscribe", p_popular:"Popular",
+    p3_t:"Enterprise", p3_price:"Custom", p3_sub:"Multi-store / team", p_cta3:"Contact sales",
+    cta_title:"Don't let compliance block your global journey",
+    cta_desc:"Sign up and get your first store risk report — free, no credit card required.",
+    cta_btn:"Start for free →", f_tag:"Compliance, simplified for every seller.",
+    f_product:"Product", f_p1:"AI Assistant", f_p2:"Risk Monitor", f_p3:"Knowledge Base",
+    f_company:"Company", f_c1:"About", f_c2:"Careers", f_c3:"Contact",
+    f_legal:"Legal", f_l1:"Privacy Policy", f_l2:"Terms of Service"
+  }
+};
+function setLang(lang) {
+  document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const k = el.getAttribute('data-i18n');
+    if (i18n[lang][k]) el.innerHTML = i18n[lang][k];
+  });
+  document.getElementById('lang-zh').classList.toggle('lang-active', lang === 'zh');
+  document.getElementById('lang-en').classList.toggle('lang-active', lang === 'en');
+}
+document.getElementById('lang-zh').addEventListener('click', () => setLang('zh'));
+document.getElementById('lang-en').addEventListener('click', () => setLang('en'));
+
+// Fade-in on scroll
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+// Register modal
+function openRegister() {
+  const m = document.getElementById('register-modal');
+  m.classList.remove('hidden');
+  m.style.display = 'flex';
+}
+function closeRegister() {
+  const m = document.getElementById('register-modal');
+  m.classList.add('hidden');
+  m.style.display = 'none';
+}
+function regNext(step) {
+  [1,2,3].forEach(i => {
+    document.getElementById('reg-step-'+i).classList.toggle('hidden', i !== step);
+    document.getElementById('step-'+i+'-dot').style.background = i <= step ? '#00B37E' : '#E5E7EB';
+  });
+}
+function selectRole(btn) {
+  document.querySelectorAll('.role-btn').forEach(b => {
+    b.style.borderColor = '#E5E7EB';
+    b.style.background = '';
+  });
+  btn.style.borderColor = '#00B37E';
+  btn.style.background = '#F2F8F5';
+}
+function completeRegister() {
+  closeRegister();
+  document.getElementById('view-landing').classList.remove('active');
+  document.getElementById('view-app').classList.add('active');
+  window.scrollTo(0,0);
+  setTimeout(() => alert('🎉 注册成功!AI 已为您生成首份风险分析报告,请查看首页。'), 200);
+}
+
+// App navigation
+function showScreen(name, el) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-'+name).classList.add('active');
+  document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
+  el.classList.add('active');
+}
+function backToLanding() {
+  document.getElementById('view-app').classList.remove('active');
+  document.getElementById('view-landing').classList.add('active');
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>
